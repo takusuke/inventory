@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>コーヒー豆 在庫管理</title>
+</head>
+
+<body>
+  <h1>コーヒー豆 在庫管理</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>品種</th>
+        <th>在庫数</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% inventory.forEach((item) => { %>
+        <tr>
+          <td><%= item.variety %></td>
+          <td><%= item.amount %></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</body>
+
+</html>
