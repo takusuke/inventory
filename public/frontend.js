@@ -10,13 +10,23 @@ async function loadInventory() {
   const inventory = await getInventory();
   const inventoryList = document.getElementById("inventory-list");
   inventoryList.innerHTML = "";
-
   inventory.forEach((item) => {
     const listItem = document.createElement("li");
     listItem.classList.add("list-group-item");
     listItem.textContent = `${item.variety} - 入庫日: ${item.entryDate} - 価格: ${item.price} - 使用量: ${item.usedAmount} - 残り: ${item.stockAmount} - 前月からの繰越量: ${item.previousMonthCarryOverAmount} - その月最も使用されている豆: ${item.totalUsedAmount}`;
+  
+    // 削除ボタンの追加
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("btn", "btn-danger", "btn-sm", "float-end");
+    deleteButton.textContent = "削除";
+    deleteButton.addEventListener("click", () => {
+      deleteBean(item.id);
+    });
+  
+    listItem.appendChild(deleteButton);
     inventoryList.appendChild(listItem);
   });
+  
 }
 
 async function addBean(variety, entryDate, price, usedAmount, stockAmount, previousMonthCarryOverAmount, totalUsedAmount) {
@@ -28,6 +38,15 @@ async function addBean(variety, entryDate, price, usedAmount, stockAmount, previ
 
   loadInventory();
 }
+
+async function deleteBean(id) {
+  await fetch(`${API_URL}/${id}`, {
+    method: "DELETE",
+  });
+
+  loadInventory();
+}
+
 
 const inventoryList = document.getElementById("inventory-list");
 if (inventoryList) {
