@@ -1,9 +1,5 @@
 const sqlite3 = require('sqlite3').verbose();
-const express = require('express');
-const app = express();
 const db = new sqlite3.Database('coffeeInventory.db');
-
-app.set('view engine', 'ejs');
 
 class CoffeeBeanInventory {
   constructor() {
@@ -12,36 +8,45 @@ class CoffeeBeanInventory {
 
   setupDatabase() {
     db.serialize(() => {
-      db.run('CREATE TABLE IF NOT EXISTS inventory (variety TEXT PRIMARY KEY, amount INTEGER)');
+      db.run(`CREATE TABLE IF NOT EXISTS inventory (
+        variety TEXT PRIMARY KEY,
+        entry_date TEXT,
+        price REAL,
+        used_amount INTEGER,
+        remaining_amount INTEGER,
+        previous_month_carry_over_amount INTEGER,
+        total_used_amount INTEGER
+      )`);
     });
   }
 
-  // その他のメソッドは変更なし
+  addBeans(variety, entryDate, price, usedAmount, remainingAmount, previousMonthCarryOverAmount, totalUsedAmount) {
+    db.serialize(() => {
+      db.run(`INSERT OR IGNORE INTO inventory (
+        variety,
+        entry_date,
+        price,
+        used_amount,
+        remaining_amount,
+        previous_month_carry_over_amount,
+        total_used_amount
+      ) VALUES (?, ?, ?, ?, ?, ?, ?)`, [variety, entryDate, price, usedAmount, remainingAmount, previousMonthCarryOverAmount, totalUsedAmount]);
+    });
+  }
+
+  getAllBeans(callback) {
+    db.serialize(() => {
+      db.all('SELECT * FROM inventory', (err, rows) => {
+        if (err) {
+          console.error(err.message);
+        } else {
+          callback(rows);
+        }
+      });
+    });
+  }
+
+  // その他のメソッドは必要に応じて追加してください。
 }
 
-const inventory = new CoffeeBeanInventory();
-
-// すべての在庫を取得するメソッドを追加
-CoffeeBeanInventory.prototype.getAllBeans = function(callback) {
-  db.serialize(() => {
-    db.all('SELECT * FROM inventory', (err, rows) => {
-      if (err) {
-        console.error(err.message);
-      } else {
-        callback(rows);
-      }
-    });
-  });
-};
-
-// Webサーバーのエンドポイントを設定
-app.get('/', (req, res) => {
-  inventory.getAllBeans((data) => {
-    res.render('index', { inventory: data });
-  });
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+module.exports = CoffeeBeanInventory;
