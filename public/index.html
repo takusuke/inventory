@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>コーヒー豆在庫管理</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <h1>コーヒー豆在庫管理</h1>
+
+        <form id="add-bean-form" class="mb-3">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="variety" class="form-label">豆の名前:</label>
+                    <input type="text" class="form-control" id="variety" name="variety" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="entry-date" class="form-label">入庫日:</label>
+                    <input type="date" class="form-control" id="entry-date" name="entry-date" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="price" class="form-label">価格:</label>
+                    <input type="number" class="form-control" id="price" name="price" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="used-amount" class="form-label">使用量:</label>
+                    <input type="number" class="form-control" id="used-amount" name="used-amount" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="stock-amount" class="form-label">入庫量:</label>
+                    <input type="number" class="form-control" id="stock-amount" name="stock-amount" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="previous-month-carry-over-amount" class="form-label">前月からの繰越量:</label>
+                    <input type="number" class="form-control" id="previous-month-carry-over-amount" name="previous-month-carry-over-amount" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="total-used-amount" class="form-label">全体の使用量:</label>
+                    <input type="number" class="form-control" id="total-used-amount" name="total-used-amount" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">追加</button>
+        </form>
+
+        <h2>在庫一覧</h2>
+        <ul id="inventory-list" class="list-group"></ul>
+        <a href="list.html" class="btn btn-primary mt-3">豆のリストへ</a>
+
+        <script src="frontend.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"  crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    </div>
+</body>
+</html>
